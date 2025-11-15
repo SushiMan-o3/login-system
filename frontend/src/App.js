@@ -15,9 +15,10 @@ function App() {
     <div className="App">
       <h1>Welcome to the App</h1>
       < Home />
-        if (!loggedIn) {
-          <Login />
-        }
+
+      if (!loggedIn) {
+        <Login />
+      }
           
     </div>
   );
