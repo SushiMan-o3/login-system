@@ -5,18 +5,22 @@ from pydantic import BaseModel, EmailStr
 from typing import List
 import sqlite3 as sql
 
-class User(BaseModel):
-    id: int
-    first_name: str
-    middle_name: str
-    last_name: str
+# Client Logging info
+class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    
+# returned to client after creating user
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
 
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000/register"
+    "http://localhost:3000/register",
+    "http://localhost:3000/login",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(
@@ -27,46 +31,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-connection = sql.connect('users.db')
+connection = sql.connect('users.db', check_same_thread=False)
 cursor = connection.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    first_name TEXT,
-                    middle_name TEXT,
-                    last_name TEXT,
                     email TEXT NOT NULL UNIQUE, 
-                    password TEXT NOT NULL),
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    password TEXT NOT NULL)
                ''')
 
 connection.commit()
 cursor.close()
 
 # create user endpoint
-@app.post("/register", response_model=User)
-def create_user(user: User):
+@app.post("/register", response_model=UserOut)
+def register(user: UserCreate):
     cursor = connection.cursor()
-    cursor.execute('''INSERT INTO users (first_name, middle_name, last_name, email, password)
-                      VALUES (?, ?, ?, ?, ?)''',
-                   (user.first_name, user.middle_name, user.last_name, user.email, user.password))
+    
+    cursor.execute('''INSERT INTO users (email, password)
+                      VALUES (?, ?)''',
+                   (user.email, user.password))
+    
     connection.commit()
     user.id = cursor.lastrowid
     cursor.close()
 
-    return user
+    return UserOut(id=user.id, email=user.email)
 
-@app.get("/register", response_model=User)
-def create_user(user: User):
-    cursor = connection.cursor()
-    cursor.row_factory = sql.Row
 
-    cursor.execute('''SELECT * FROM users''')
-    
-    data = cursor.fetchall()
-    cursor.close()
-
-    return User(data)
+@app.get("/login")
+def create_user(email: EmailStr, password: str):
+    pass
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
