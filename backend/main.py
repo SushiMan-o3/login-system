@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, emailStr
+from pydantic import BaseModel, EmailStr
 from typing import List
 import sqlite3 as sql
 
@@ -10,14 +10,13 @@ class User(BaseModel):
     first_name: str
     middle_name: str
     last_name: str
-    email: emailStr
+    email: EmailStr
     password: str
 
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000/register",
-    "http://localhost:3000/login"
+    "http://localhost:3000/register"
 ]
 
 app.add_middleware(
@@ -54,5 +53,20 @@ def create_user(user: User):
     connection.commit()
     user.id = cursor.lastrowid
     cursor.close()
-    
+
     return user
+
+@app.get("/register", response_model=User)
+def create_user(user: User):
+    cursor = connection.cursor()
+    cursor.row_factory = sql.Row
+
+    cursor.execute('''SELECT * FROM users''')
+    
+    data = cursor.fetchall()
+    cursor.close()
+
+    return User(data)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
