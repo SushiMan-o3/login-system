@@ -1,11 +1,24 @@
 import { useState } from "react";
-import logo from './logo.svg';
 import './App.css';
+import Home from "./components/home/home";
+import Login from "./components/login/login";
+
+
+let loggedIn = true;
+
+const userInfo = {
+  
+};
 
 function App() {
   return (
     <div className="App">
-
+      <h1>Welcome to the App</h1>
+      < Home />
+        if (!loggedIn) {
+          <Login />
+        }
+          
     </div>
   );
 }
