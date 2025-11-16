@@ -64,7 +64,3 @@ npm start
 
 5. After running the command above, a **local development URL** will appear in the terminal.
    Click the generated link to open the application in your browser.
-
-
-
-If you want, I can also add sections like **Project Structure**, **Environment Variables**, **API Endpoints**, or **Troubleshooting**.
