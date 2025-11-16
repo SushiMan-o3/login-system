@@ -18,8 +18,6 @@ class UserOut(BaseModel):
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000/register",
-    "http://localhost:3000/login",
     "http://localhost:3000"
 ]
 
@@ -36,7 +34,7 @@ cursor = connection.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    email TEXT NOT NULL UNIQUE, 
+                    email TEXT NOT NULL, 
                     password TEXT NOT NULL)
                ''')
 
@@ -53,10 +51,10 @@ def register(user: UserCreate):
                    (user.email, user.password))
     
     connection.commit()
-    user.id = cursor.lastrowid
+    newid = cursor.lastrowid
     cursor.close()
 
-    return UserOut(id=user.id, email=user.email)
+    return UserOut(id=newid, email=user.email)
 
 
 @app.get("/login")
@@ -64,4 +62,4 @@ def create_user(email: EmailStr, password: str):
     pass
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
