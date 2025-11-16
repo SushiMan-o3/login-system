@@ -5,7 +5,7 @@ import Login from "./components/login/login";
 import Register from "./components/register/registerForm";
 
 
-let loggedIn = true;
+let loggedIn = false;
 
 const userInfo = {
   

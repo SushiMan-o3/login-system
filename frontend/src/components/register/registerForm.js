@@ -1,22 +1,22 @@
 import "./register.css";
 import ParticlesBackground from "../backgroundParticleJS";
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 
-export default function registerForm() {
+export default function registerForm({ onRegister }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (event) => {
+        event.preventDefault();
+
         if (!name || !email || !password) {
             alert("Please fill in all fields.");
             return;
         } else {
+            onRegister({ name, email, password });
             alert(`Account created for ${name} with email ${email}`);
-            // change to login page after successful registration
         }
-
-        event.preventDefault();
     };
 
     return (
@@ -25,20 +25,20 @@ export default function registerForm() {
                 <ParticlesBackground />
             </div>
 
-            <div className="box">
+            <form className="box" onSubmit={handleSubmit}>
                 <h1>Create Account</h1>
                 
                 <p>Name</p>
-                <input type="text" id="name" name="name" className="inputBox" required />
+                <input type="text" id="name" name="name" className="inputBox" onChange={(e) => setName(e.target.value)} required />
 
                 <p>Email</p>
-                <input type="email" id="email" name="email" className="inputBox" required />
+                <input type="email" id="email" name="email" className="inputBox" onChange={(e) => setEmail(e.target.value)} required />
 
                 <p>Password</p>
-                <input type="password" id="password" name="password" className="inputBox" required />
+                <input type="password" id="password" name="password" className="inputBox" onChange={(e) => setPassword(e.target.value)} required />
 
-                <button type="submit" className="signupbutton">Sign Up</button>
-            </div>
+                <button type="submit" className="signupbutton"> </button>
+            </form>
         </div>
     );
 }
