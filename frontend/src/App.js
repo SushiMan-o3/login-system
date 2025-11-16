@@ -2,7 +2,7 @@ import { useState } from "react";
 import './App.css';
 import Home from "./components/home/home";
 import Login from "./components/login/login";
-import Register from "./components/register/registerForm";
+import Register from "./components/register/register"; 
 
 
 let loggedIn = false;

@@ -37,7 +37,7 @@ export default function registerForm({ onRegister }) {
                 <p>Password</p>
                 <input type="password" id="password" name="password" className="inputBox" onChange={(e) => setPassword(e.target.value)} required />
 
-                <button type="submit" className="signupbutton"> </button>
+                <button type="submit" className="signupbutton">Sign Up</button>
             </form>
         </div>
     );
