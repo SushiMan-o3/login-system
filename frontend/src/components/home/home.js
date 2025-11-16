@@ -1,6 +1,6 @@
 import "./home.css";
 import { useState } from 'react';
-import ParticlesBackground from "./background";
+import ParticlesBackground from "../backgroundParticleJS";
 
 export default function home() {
   return (
