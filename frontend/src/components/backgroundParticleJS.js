@@ -20,7 +20,7 @@ export default function ParticlesBackground() {
         zIndex: -1,
       },
       background: {
-        color: "#0d47a1",
+        color: "#18b65f",
       },
       particles: {
         number: {
