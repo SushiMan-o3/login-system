@@ -7,12 +7,14 @@ import sqlite3 as sql
 
 # Client Logging info
 class UserCreate(BaseModel):
+    name: str
     email: EmailStr
     password: str
     
 # returned to client after creating user
 class UserOut(BaseModel):
     id: int
+    name: str
     email: EmailStr
 
 app = FastAPI()
@@ -34,6 +36,7 @@ cursor = connection.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
                     email TEXT NOT NULL, 
                     password TEXT NOT NULL)
                ''')
@@ -46,15 +49,15 @@ cursor.close()
 def register(user: UserCreate):
     cursor = connection.cursor()
     
-    cursor.execute('''INSERT INTO users (email, password)
-                      VALUES (?, ?)''',
-                   (user.email, user.password))
+    cursor.execute('''INSERT INTO users (name, email, password)
+                      VALUES (?, ?, ?)''',
+                   (user.name, user.email, user.password))
     
     connection.commit()
     newid = cursor.lastrowid
     cursor.close()
 
-    return UserOut(id=newid, email=user.email)
+    return UserOut(id=newid, name=user.name, email=user.email)
 
 
 @app.get("/login")
