@@ -1,26 +1,21 @@
-import "./login.css";
-import { useState } from 'react';
+import "./register.css";
+import loginForm from "./loginForm";
+import api from "../../api"; 
+import { useState, useEffect } from "react";
 
-export default function login() {
+export default function Login() {
+  const handleLogin = async ({ email, password }) => {
+    try {
+      await api.post("/login", { email, password });
+      console.log("User logged in!");
+    } catch (err) {
+      console.error("Error logging in user:", err);
+    }
+  };
+
   return (
-    <div>
-      <h1>Counters that update separately</h1>
-      <MyButton />
+    <div className="login-page">
+      <loginForm onLogin={handleLogin} />
     </div>
   );
 }
-
-function MyButton() {
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount(count + 1);
-  }
-
-  return (
-    <button onClick={handleClick}>
-      Clicked {count} times
-    </button>
-  );
-}
-

@@ -61,8 +61,18 @@ def register(user: UserCreate):
 
 
 @app.get("/login")
-def create_user(email: EmailStr, password: str):
-    pass
-
+def login(email: EmailStr, password: str):
+    cursor = connection.cursor()
+    
+    cursor.execute('''SELECT id, name, email, password FROM users WHERE email = ?''', (email))
+    row = cursor.fetchone()
+    cursor.close()
+    
+    if row is None or row[3] != password:
+        return {"error": "Invalid email or password"}
+    
+    return UserOut(id=row[0], name=row[1], email=row[2])
+        
+    
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
