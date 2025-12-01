@@ -31,7 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-connection = sql.connect('users.db', check_same_thread=False)
+connection = sql.connect('data.db', check_same_thread=False)
 cursor = connection.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users
@@ -60,11 +60,11 @@ def register(user: UserCreate):
     return UserOut(id=newid, name=user.name, email=user.email)
 
 
-@app.get("/login")
+@app.post("/login")
 def login(email: EmailStr, password: str):
     cursor = connection.cursor()
     
-    cursor.execute('''SELECT id, name, email, password FROM users WHERE email = ?''', (email))
+    cursor.execute('''SELECT id, name, email, password FROM users WHERE email = ?''', (email,))
     row = cursor.fetchone()
     cursor.close()
     
