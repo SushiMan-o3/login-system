@@ -1,6 +1,7 @@
 # TO DO
-- Figure out how the tokens work
 - Password hashing
+- token verification
+- /me endpoint
 - merging the front end to the backend
 - Get seperate pages for login home and register working
 
