@@ -56,7 +56,10 @@ cursor.close()
 
 # Create Token for Login
 def create_token(data: dict, expiration: datetime.timedelta = None):
-    pass 
+    to_encode = data.copy()
+    expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) 
 
 
 # Create user endpoint
@@ -92,7 +95,15 @@ def login(email: EmailStr, password: str):
     if row is None or row[3] != password:
         return {"error": "Invalid email or password"}
     
-    return UserOut(id=row[0], name=row[1], email=row[2])
+    payload = {
+        "user_id": row[0],
+        "email": row[2],
+        "expiration": datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+    }
+
+    token = create_token(payload)
+    
+    return UserToken(token=token)
         
     
 if __name__ == "__main__":
