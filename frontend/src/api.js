@@ -1,6 +1,6 @@
-import axois from 'axios';
+import axios from "axios";
 
-const api = axois.create({
+const api = axios.create({
   baseURL: 'http://localhost:8000',
 });
 

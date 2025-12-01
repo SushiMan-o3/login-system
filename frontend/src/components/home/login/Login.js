@@ -1,6 +1,5 @@
-import "./register.css";
-import loginForm from "./loginForm";
-import api from "../../api"; 
+import LoginForm from "./LoginForm";
+import api from "../../../api"; 
 import { useState, useEffect } from "react";
 
 export default function Login() {
@@ -15,7 +14,7 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <loginForm onLogin={handleLogin} />
+      <LoginForm onLogin={handleLogin} />
     </div>
   );
 }

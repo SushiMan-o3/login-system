@@ -1,7 +1,6 @@
 import "./register.css";
-import RegisterForm from "./registerForm";
+import RegisterForm from "./RegisterForm";
 import api from "../../api"; 
-import { useState, useEffect } from "react";
 
 export default function Register() {
   const handleRegister = async ({ name, email, password }) => {

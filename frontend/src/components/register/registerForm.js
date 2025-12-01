@@ -1,8 +1,10 @@
 import "./register.css";
 import ParticlesBackground from "../backgroundParticleJS";
 import { useState, useEffect} from 'react';
+import "./register.css";  
 
-export default function registerForm({ onRegister }) {
+
+export default function RegisterForm({ onRegister }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

@@ -1,8 +1,8 @@
-import "./login";
-import ParticlesBackground from "../backgroundParticleJS";
-import { useState, useEffect} from 'react';
+import "./Login";
+import ParticlesBackground from "../../backgroundParticleJS";
+import { useState, useEffect } from 'react';
 
-export default function loginForm({ onLogin }) {
+export default function LoginForm({ onLogin }) {  
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
