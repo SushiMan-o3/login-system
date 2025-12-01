@@ -4,6 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import List
 import sqlite3 as sql
+from jose import jwt
+import datetime
+
+# JWT Configuration
+SECRET_KEY = "CHANGE_ME_IN_PRODUCTION"          
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60*24
 
 # Client Logging info
 class UserCreate(BaseModel):
@@ -47,7 +54,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS users
 connection.commit()
 cursor.close()
 
-# create user endpoint
+# Create Token for Login
+def create_token(data: dict, expiration: datetime.timedelta = None):
+    pass 
+
+
+# Create user endpoint
 @app.post("/register", response_model=UserOut)
 def register(user: UserCreate):
     cursor = connection.cursor()
