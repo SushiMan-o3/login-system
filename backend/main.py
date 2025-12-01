@@ -16,6 +16,9 @@ class UserOut(BaseModel):
     id: int
     name: str
     email: EmailStr
+    
+class UserToken(BaseModel):
+    token: str
 
 app = FastAPI()
 
@@ -49,6 +52,12 @@ cursor.close()
 def register(user: UserCreate):
     cursor = connection.cursor()
     
+    cursor.execute('''SELECT id, name, email, password FROM users WHERE email = ?''', (user.email,))
+
+    if cursor.fetchone() is not None:
+        cursor.close()
+        return {"error": "Email already registered"}
+
     cursor.execute('''INSERT INTO users (name, email, password)
                       VALUES (?, ?, ?)''',
                    (user.name, user.email, user.password))
